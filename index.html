@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="icon" href="data:">
+<title>QR2Link</title>
+</head><body>
+<h1>QR2Link</h1>
+
+<script type="module" src="https://code4fukui.github.io/qr-code-reader/qr-code-reader.js"></script>
+<script type="module" src="https://code4fukui.github.io/qr-code/qr-code.js"></script>
+
+<qr-code id="qr"></qr-code><br>
+<qr-code-reader id="qrr"></qr-code-reader>
+
+<hr>
+lib: <a href=https://github.com/code4fukui/qr-code-reader/>qr-code-reader</a> / <a href=https://github.com/code4fukui/qr-code/>qr-code</a><br>
+<a href=https://github.com/code4fukui/qr2link>src on GitHub</a><br>
+
+<script type="module">
+import { Base64URL } from "https://code4fukui.github.io/Base64URL/Base64URL.js";
+
+qrr.oninput = (code) => {
+  console.log(code);
+  qr.value = code.binaryData;
+  location.hash = Base64URL.encode(code.binaryData);
+  qrr.stop();
+};
+
+const hash = location.hash.substring(1);
+const code = hash.length ? Base64URL.decode(hash) : location.href;
+qr.value = code;
+</script>
+
+<style>
+body {
+  font-family: sans-serif;
+  text-align: center;
+}
+a {
+  color: gray !important;
+}
+</style>
+</body></html>
