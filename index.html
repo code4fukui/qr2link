@@ -17,7 +17,6 @@ lib: <a href=https://github.com/code4fukui/qr-code-reader/>qr-code-reader</a> / 
 import { Base64URL } from "https://code4fukui.github.io/Base64URL/Base64URL.js";
 
 qrr.oninput = (code) => {
-  console.log(code);
   qr.value = code.binaryData;
   location.hash = Base64URL.encode(code.binaryData);
   qrr.stop();
