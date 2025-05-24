@@ -15,8 +15,10 @@ lib: <a href=https://github.com/code4fukui/qr-code-reader/>qr-code-reader</a> / 
 
 <script type="module">
 import { Base64URL } from "https://code4fukui.github.io/Base64URL/Base64URL.js";
+import { decodeImageFromFile } from "https://code4fukui.github.io/qr-code-reader/decodeImageFromFile.js";
 
 qrr.oninput = (code) => {
+  console.log(code);
   qr.value = code.binaryData;
   location.hash = Base64URL.encode(code.binaryData);
   qrr.stop();
@@ -25,6 +27,21 @@ qrr.oninput = (code) => {
 const hash = location.hash.substring(1);
 const code = hash.length ? Base64URL.decode(hash) : location.href;
 qr.value = code;
+
+document.body.addEventListener("paste", async (e) => {
+  e.preventDefault();
+  const items = e.clipboardData?.items;
+  if (!items) return;
+  for (const item of items) {
+    if (item.type.startsWith("image/")) {
+      const file = item.getAsFile();
+
+      const imgd = await decodeImageFromFile(file);
+      qrr.decodeQR(imgd);
+      break;
+    }
+  }
+});
 </script>
 
 <style>
